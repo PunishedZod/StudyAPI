@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using StudyAPI.Models;
 using StudyAPI.Services;
@@ -9,66 +10,70 @@ namespace StudyAPI.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly UserService _userService;
+        private readonly Service _service;
 
-        public UserController(UserService userService)
+        public UserController(Service service)
         {
-            _userService = userService;
+            _service = service;
         }
 
         [HttpGet]
-        public ActionResult<List<User>> Get() =>
-            _userService.Get();
+        public async Task<IActionResult> Get()
+        {
+            return new ObjectResult(await _service.Get<User>("User"));
+        }
 
         [HttpGet("{id:length(24)}", Name = "GetUser")]
-        public ActionResult<User> Get(string id)
+        public async Task<IActionResult> Get(string id)
         {
-            var user = _userService.Get(id);
+            var user = await _service.Get<User>(id, "User");
 
             if (user == null)
             {
                 return NotFound();
             }
 
-            return user;
+            return new ObjectResult(user);
+
+            //get the whole list on start up, after logging in, search the list if uname and password match, then save the userid
         }
 
         [HttpPost]
-        public ActionResult<User> Create(User user)
+        public async Task<ActionResult> Insert(User user)
         {
-            _userService.Create(user);
+           await _service.Insert("User", user);
 
             return CreatedAtRoute("GetUser", new { id = user.Id.ToString() }, user);
         }
 
         [HttpPut("{id:length(24)}")]
-        public IActionResult Update(string id, User userIn)
+        public async Task<IActionResult> Update(string id, User user)
         {
-            var user = _userService.Get(id);
+            var userDB = await _service.Get<User>(id, "User");
 
-            if (user == null)
+            if (userDB == null)
             {
                 return NotFound();
             }
 
-            _userService.Update(id, userIn);
+            user.Id = userDB.Id;
 
-            return NoContent();
+            await _service.Update(user.Id, user, "User");
+
+            return new OkObjectResult(user);
         }
 
         [HttpDelete("{id:length(24)}")]
-        public IActionResult Delete(string id)
+        public async Task<IActionResult> Delete(string id)
         {
-            var user = _userService.Get(id);
+            var userDB = await _service.Get<User>(id, "User");
 
-            if (user == null)
-            {
-                return NotFound();
-            }
+            if (userDB == null)
+                return new NotFoundResult();
 
-            _userService.Remove(user.Id);
+            await _service.Delete<User>(id, "User");
 
-            return NoContent();
+            return new OkResult();
         }
     }
 }

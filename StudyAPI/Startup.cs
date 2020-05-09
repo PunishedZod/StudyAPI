@@ -29,7 +29,7 @@ namespace StudyAPI
             services.AddSingleton<IStudyDBSettings>(sp =>
                 sp.GetRequiredService<IOptions<StudyDBSettings>>().Value);
 
-            services.AddSingleton<UserService>();
+            services.AddSingleton<Service>();
 
             services.AddControllers();
         }
