@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using StudyAPI.Models;
+using StudyAPI.Models.Interfaces;
 using StudyAPI.Services;
 
 namespace StudyAPI

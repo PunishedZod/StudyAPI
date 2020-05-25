@@ -2,10 +2,12 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using StudyAPI.Models;
+using StudyAPI.Models.Interfaces;
 using StudyAPI.Services;
 
 namespace StudyAPI.Controllers
 {
+    //Controller for the User table in the database
     [Route("api/[controller]")]
     [ApiController]
     public class UserController : ControllerBase
@@ -18,12 +20,12 @@ namespace StudyAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> GetAll()
         {
             return new ObjectResult(await _service.Get<User>("User"));
         }
 
-        [HttpGet("{id:length(24)}", Name = "GetUser")]
+        [HttpGet("{id:length(24)}")]
         public async Task<IActionResult> Get(string id)
         {
             var user = await _service.Get<User>(id, "User");
@@ -34,8 +36,19 @@ namespace StudyAPI.Controllers
             }
 
             return new ObjectResult(user);
+        }
 
-            //get the whole list on start up, after logging in, search the list if uname and password match, then save the userid
+        [HttpGet("Username={Uname}&Password={Pword}")]
+        public async Task<IActionResult> Get(string uname, string pword)
+        {
+            var user = await _service.GetLogin<User>(uname, pword, "User");
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return new ObjectResult(user);
         }
 
         [HttpPost]
@@ -43,7 +56,7 @@ namespace StudyAPI.Controllers
         {
            await _service.Insert("User", user);
 
-            return CreatedAtRoute("GetUser", new { id = user.Id.ToString() }, user);
+            return CreatedAtRoute("PostUser", new { id = user.Id.ToString() }, user);
         }
 
         [HttpPut("{id:length(24)}")]

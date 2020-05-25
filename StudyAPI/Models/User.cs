@@ -1,9 +1,11 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+using StudyAPI.Models.Interfaces;
 
 namespace StudyAPI.Models
 {
-    public class User
+    //Model class to get and set data for the table and database, an interface of the model is used to ensure we aren't directly taking it from the model itself
+    public class User : IUser
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
