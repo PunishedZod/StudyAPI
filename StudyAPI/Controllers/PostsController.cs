@@ -53,11 +53,12 @@ namespace StudyAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Insert(Posts post)
+        public async Task<IActionResult> Insert([FromBody]Posts post)
         {
             await _service.Insert("Posts", post);
 
-            return CreatedAtRoute("PostPosts", new { id = post.Id.ToString() }, post);
+            return new ObjectResult(post);
+            //return CreatedAtRoute("PostPosts", new { id = post.Id.ToString() }, post);
         }
 
         [HttpPut("{id:length(24)}")]

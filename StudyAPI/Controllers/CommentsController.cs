@@ -42,11 +42,12 @@ namespace StudyAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Insert(Comments comment)
+        public async Task<IActionResult> Insert([FromBody]Comments comment)
         {
             await _service.Insert("Comments", comment);
 
-            return CreatedAtRoute("PostComments", new { id = comment.Id.ToString() }, comment);
+            return new ObjectResult(comment);
+            //return CreatedAtRoute("PostComments", new { id = comment.Id.ToString() }, comment);
         }
 
         [HttpPut("{id:length(24)}")]

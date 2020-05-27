@@ -52,13 +52,13 @@ namespace StudyAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Insert(User user)
+        public async Task Insert([FromBody]User user)
         {
            await _service.Insert("User", user);
-
-            return CreatedAtRoute("PostUser", new { id = user.Id.ToString() }, user);
+           //return CreatedAtRoute("PostUser", new { id = user.Id.ToString() }, user);
         }
 
+        //NEEDS WORK DONE || PRIORITY !!!
         [HttpPut("{id:length(24)}")]
         public async Task<IActionResult> Update(string id, User user)
         {

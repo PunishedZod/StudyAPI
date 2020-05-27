@@ -10,11 +10,12 @@ namespace StudyAPI.Models
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
-        public string Uname { get; set; }
         public string Topic { get; set; }
         public string Title { get; set; }
         public string Content { get; set; }
-        public int UpVote { get; set; }
-        public int DownVote { get; set; }
+        public string[] UpVoteId { get; set; }
+        public string[] DownVoteId { get; set; }
+        public string UId { get; set; }
+        public string Uname { get; set; }
     }
 }
