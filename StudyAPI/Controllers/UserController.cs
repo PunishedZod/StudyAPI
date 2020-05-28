@@ -62,7 +62,7 @@ namespace StudyAPI.Controllers
         {
             await _service.Update(user.Id, user, collection);
 
-            return new OkObjectResult(user);
+            return new ObjectResult(user);
         }
 
         [HttpDelete("{id:length(24)}")]

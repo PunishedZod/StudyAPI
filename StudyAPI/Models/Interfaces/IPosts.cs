@@ -7,7 +7,7 @@
         string Id { get; set; }
         string Title { get; set; }
         string Topic { get; set; }
-        string UId { get; set; }
+        string UserId { get; set; }
         string Uname { get; set; }
         string[] UpVote { get; set; }
     }

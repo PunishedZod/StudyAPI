@@ -31,6 +31,12 @@ namespace StudyAPI.Controllers
             return new ObjectResult(await _service.GetRecent<Posts>(collection));
         }
 
+        [HttpGet("UserId={UserId:length(24)}")]
+        public async Task<ActionResult<IEnumerable<Posts>>> GetPostsByUser(string userid)
+        {
+            return Ok(await _service.GetPostsByUser<Posts>(userid, collection));
+        }
+
         [HttpGet("{id:length(24)}")]
         public async Task<IActionResult> Get(string id)
         {

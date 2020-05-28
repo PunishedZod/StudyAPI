@@ -15,7 +15,7 @@ namespace StudyAPI.Models
         public string Content { get; set; }
         public string[] UpVote { get; set; }
         public string[] DownVote { get; set; }
-        public string UId { get; set; }
+        public string UserId { get; set; }
         public string Uname { get; set; }
     }
 }

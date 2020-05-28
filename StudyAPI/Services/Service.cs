@@ -31,13 +31,31 @@ namespace StudyAPI.Services
             return await collection.Find(new BsonDocument()).Sort("{_id: -1}").ToListAsync(); //sorts out the posts by most recent (descending order) and returns them to a list with a set limit
         }
 
-        //Task gets a table out of the database
+        //Task gets all comment records matching post id out of the database
         public async Task<IEnumerable<T>> GetCommentsByPost<T>(string postid, string collectionName)
         {
             var collection = db.GetCollection<T>(collectionName);
             var filter = Builders<T>.Filter.Eq("PostId", postid);
 
             return await collection.Find(filter).ToListAsync();
+        }
+
+        //Task gets all comment records matching user id out of the database
+        public async Task<IEnumerable<T>> GetCommentsByUser<T>(string userid, string collectionName)
+        {
+            var collection = db.GetCollection<T>(collectionName);
+            var filter = Builders<T>.Filter.Eq("UserId", userid);
+
+            return await collection.Find(filter).Sort("{_id: -1}").ToListAsync();
+        }
+
+        //Task gets all post records matching user id out of the database
+        public async Task<IEnumerable<T>> GetPostsByUser<T>(string userid, string collectionName)
+        {
+            var collection = db.GetCollection<T>(collectionName);
+            var filter = Builders<T>.Filter.Eq("UserId", userid);
+
+            return await collection.Find(filter).Sort("{_id: -1}").ToListAsync();
         }
 
         //Task gets a record from a table out of the database

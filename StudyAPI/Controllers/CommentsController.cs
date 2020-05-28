@@ -31,6 +31,12 @@ namespace StudyAPI.Controllers
             return Ok(await _service.GetCommentsByPost<Comments>(postid, collection));
         }
 
+        [HttpGet("UserId={UserId:length(24)}")]
+        public async Task<ActionResult<IEnumerable<Comments>>> GetCommentsByUser(string userid)
+        {
+            return Ok(await _service.GetCommentsByUser<Comments>(userid, collection));
+        }
+
         [HttpGet("{id:length(24)}")]
         public async Task<IActionResult> Get(string id)
         {
