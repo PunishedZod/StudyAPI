@@ -1,13 +1,13 @@
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
-using StudyAPI.Models;
 using StudyAPI.Models.Interfaces;
+using Microsoft.AspNetCore.Http;
 using StudyAPI.Services;
+using StudyAPI.Models;
 
 namespace StudyAPI
 {
@@ -31,7 +31,6 @@ namespace StudyAPI
                 sp.GetRequiredService<IOptions<StudyDBSettings>>().Value);
 
             services.AddSingleton<Service>();
-
             services.AddControllers();
         }
 

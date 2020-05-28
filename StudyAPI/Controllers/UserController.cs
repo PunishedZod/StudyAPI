@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using StudyAPI.Models;
-using StudyAPI.Models.Interfaces;
+using System.Threading.Tasks;
 using StudyAPI.Services;
+using StudyAPI.Models;
 
 namespace StudyAPI.Controllers
 {
@@ -13,6 +12,7 @@ namespace StudyAPI.Controllers
     public class UserController : ControllerBase
     {
         private readonly Service _service;
+        private readonly string collection = "User";
 
         public UserController(Service service)
         {
@@ -20,15 +20,15 @@ namespace StudyAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<ActionResult<IEnumerable<User>>> GetAll()
         {
-            return new ObjectResult(await _service.Get<User>("User"));
+            return Ok(await _service.Get<User>(collection));
         }
 
         [HttpGet("{id:length(24)}")]
         public async Task<IActionResult> Get(string id)
         {
-            var user = await _service.Get<User>(id, "User");
+            var user = await _service.Get<User>(id, collection);
 
             if (user == null)
             {
@@ -41,7 +41,7 @@ namespace StudyAPI.Controllers
         [HttpGet("Username={Uname}&Password={Pword}")]
         public async Task<IActionResult> Get(string uname, string pword)
         {
-            var user = await _service.GetLogin<User>(uname, pword, "User");
+            var user = await _service.GetLogin<User>(uname, pword, collection);
 
             if (user == null)
             {
@@ -52,26 +52,15 @@ namespace StudyAPI.Controllers
         }
 
         [HttpPost]
-        public async Task Insert([FromBody]User user)
+        public async Task Insert(User user)
         {
-           await _service.Insert("User", user);
-           //return CreatedAtRoute("PostUser", new { id = user.Id.ToString() }, user);
+            await _service.Insert(collection, user);
         }
 
-        //NEEDS WORK DONE || PRIORITY !!!
-        [HttpPut("{id:length(24)}")]
-        public async Task<IActionResult> Update(string id, User user)
+        [HttpPut]
+        public async Task<IActionResult> Update(User user)
         {
-            var userDB = await _service.Get<User>(id, "User");
-
-            if (userDB == null)
-            {
-                return NotFound();
-            }
-
-            user.Id = userDB.Id;
-
-            await _service.Update(user.Id, user, "User");
+            await _service.Update(user.Id, user, collection);
 
             return new OkObjectResult(user);
         }
@@ -79,14 +68,9 @@ namespace StudyAPI.Controllers
         [HttpDelete("{id:length(24)}")]
         public async Task<IActionResult> Delete(string id)
         {
-            var userDB = await _service.Get<User>(id, "User");
+            await _service.Delete<User>(id, collection);
 
-            if (userDB == null)
-                return new NotFoundResult();
-
-            await _service.Delete<User>(id, "User");
-
-            return new OkResult();
+            return Ok();
         }
     }
 }

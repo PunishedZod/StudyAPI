@@ -1,6 +1,6 @@
-﻿using MongoDB.Bson;
-using MongoDB.Bson.Serialization.Attributes;
+﻿using MongoDB.Bson.Serialization.Attributes;
 using StudyAPI.Models.Interfaces;
+using MongoDB.Bson;
 
 namespace StudyAPI.Models
 {
@@ -13,8 +13,8 @@ namespace StudyAPI.Models
         public string Topic { get; set; }
         public string Title { get; set; }
         public string Content { get; set; }
-        public string[] UpVoteId { get; set; }
-        public string[] DownVoteId { get; set; }
+        public string[] UpVote { get; set; }
+        public string[] DownVote { get; set; }
         public string UId { get; set; }
         public string Uname { get; set; }
     }

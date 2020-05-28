@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
-using StudyAPI.Models;
-using StudyAPI.Models.Interfaces;
+using System.Threading.Tasks;
 using StudyAPI.Services;
+using StudyAPI.Models;
 
 namespace StudyAPI.Controllers
 {
@@ -16,6 +12,7 @@ namespace StudyAPI.Controllers
     public class CommentsController : ControllerBase
     {
         private readonly Service _service;
+        private readonly string collection = "Comments";
 
         public CommentsController(Service service)
         {
@@ -23,15 +20,15 @@ namespace StudyAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<ActionResult<IEnumerable<Comments>>> GetAll()
         {
-            return new ObjectResult(await _service.Get<Comments>("Comments"));
+            return Ok(await _service.Get<Comments>(collection));
         }
 
         [HttpGet("{id:length(24)}")]
         public async Task<IActionResult> Get(string id)
         {
-            var comment = await _service.Get<Comments>(id, "Comments");
+            var comment = await _service.Get<Comments>(id, collection);
 
             if (comment == null)
             {
@@ -42,42 +39,27 @@ namespace StudyAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Insert([FromBody]Comments comment)
+        public async Task<IActionResult> Insert(Comments comment)
         {
-            await _service.Insert("Comments", comment);
+            await _service.Insert(collection, comment);
 
             return new ObjectResult(comment);
-            //return CreatedAtRoute("PostComments", new { id = comment.Id.ToString() }, comment);
         }
 
-        [HttpPut("{id:length(24)}")]
-        public async Task<IActionResult> Update(string id, Comments comment)
+        [HttpPut]
+        public async Task<IActionResult> Update(Comments comments)
         {
-            var commentDB = await _service.Get<Comments>(id, "Comments");
+            await _service.Update(comments.Id, comments, collection);
 
-            if (commentDB == null)
-            {
-                return NotFound();
-            }
-
-            comment.Id = commentDB.Id;
-
-            await _service.Update(comment.Id, comment, "Comments");
-
-            return new OkObjectResult(comment);
+            return new OkObjectResult(comments);
         }
 
         [HttpDelete("{id:length(24)}")]
         public async Task<IActionResult> Delete(string id)
         {
-            var commentDB = await _service.Get<Comments>(id, "Comments");
+            await _service.Delete<Comments>(id, collection);
 
-            if (commentDB == null)
-                return new NotFoundResult();
-
-            await _service.Delete<Comments>(id, "Comments");
-
-            return new OkResult();
+            return Ok();
         }
     }
 }

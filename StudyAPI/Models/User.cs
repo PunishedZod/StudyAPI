@@ -1,6 +1,6 @@
-﻿using MongoDB.Bson;
-using MongoDB.Bson.Serialization.Attributes;
+﻿using MongoDB.Bson.Serialization.Attributes;
 using StudyAPI.Models.Interfaces;
+using MongoDB.Bson;
 
 namespace StudyAPI.Models
 {
