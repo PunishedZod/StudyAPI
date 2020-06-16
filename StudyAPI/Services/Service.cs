@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
-using StudyAPI.Models.Interfaces;
-using System.Threading.Tasks;
+﻿using MongoDB.Bson;
 using MongoDB.Driver;
-using MongoDB.Bson;
+using System.Threading.Tasks;
+using StudyAPI.Models.Interfaces;
+using System.Collections.Generic;
 
 namespace StudyAPI.Services
 {
